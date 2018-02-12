@@ -163,14 +163,14 @@
     delay: 30
     timeout: 400
 
-- name: WIN_SHELL | Register DNS entry with Domain Controller
+- name: WIN_SHELL | Register DNS entry with Domain controller
   delegate_to: "{{ hyper_v_clustered_instance.dns_server }}"
   win_shell: |-
-    if (!(Get-DnsServerResourceRecord -Name "{{ hyper_v_clustered_instance.sdn }}" -ZoneName "{{ domain }}" -erroraction 'ignore')) {
-      Add-DnsServerResourceRecordA -Name "{{ hyper_v_clustered_instance.sdn }}" -ZoneName "{{ domain }}" -AllowUpdateAny -IPv4Address "{{ hyper_v_clustered_instance.network.ip }}" }
+    if (!(Get-DnsServerResourceRecord -Name "{{ hyper_v_clustered_instance.sdn }}" -ZoneName "{{ hyper_v_clustered_instance.fqdn.split('.')[1:] | join('.') }}" -erroraction 'ignore')) {
+      Add-DnsServerResourceRecordA -Name "{{ hyper_v_clustered_instance.sdn }}" -ZoneName "{{ hyper_v_clustered_instance.fqdn.split('.')[1:] | join('.') }}" -AllowUpdateAny -IPv4Address "{{ hyper_v_clustered_instance.network.ip }}" }
     else {
-      Remove-DnsServerResourceRecord -ZoneName "{{ domain }}" -RRType "A" -Name "{{ hyper_v_clustered_instance.sdn }}" -Force;
-      Add-DnsServerResourceRecordA -Name "{{ hyper_v_clustered_instance.sdn }}" -ZoneName "{{ domain }}" -AllowUpdateAny -IPv4Address "{{ hyper_v_clustered_instance.network.ip }}" }
+      Remove-DnsServerResourceRecord -ZoneName "{{ hyper_v_clustered_instance.fqdn.split('.')[1:] | join('.') }}" -RRType "A" -Name "{{ hyper_v_clustered_instance.sdn }}" -Force;
+      Add-DnsServerResourceRecordA -Name "{{ hyper_v_clustered_instance.sdn }}" -ZoneName "{{ hyper_v_clustered_instance.fqdn.split('.')[1:] | join('.') }}" -AllowUpdateAny -IPv4Address "{{ hyper_v_clustered_instance.network.ip }}" }
 
 - name: WIN_SHELL | Add VM to Cluster
   delegate_to: "{{ hyper_v_clustered_instance.hyper_v.cluster }}"
