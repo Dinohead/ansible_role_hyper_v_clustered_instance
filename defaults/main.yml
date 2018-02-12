@@ -1,0 +1,30 @@
+---
+#========================
+# File defaults/main.yml
+#
+# Description: default variables for role
+#
+# Author: Derek 'dRock' Halsey
+#========================
+
+hyper_v_clustered_instance:
+  fqdn: host01
+  sdn: host01.domain.com
+  processors: 2
+  node: hyperv01.domain.com
+  memory:
+    type: DynamicMemory
+    min: 1GB
+    max: 4GB
+  network:
+    v_switch: SW-1G
+    ip: 10.0.1.100
+    subnet: 255.255.255.0
+    dns: 10.0.1.2,10.0.1.22,10.0.1.222
+    gateway: 10.0.1.1
+  hyper_v:
+    host: hyperv01.domain.com
+    cluster: cluster01.domain.com
+    storage_path: C:\ClusterStorage\cluster-storage-01\vm
+    vhdx_template: C:\ClusterStorage\cluster-storage-01\vhdx-templates\ubuntu-server-1604.vhdx
+  dns_server: dns01.domain.com
