@@ -145,11 +145,18 @@
   tags:
   - setNetwork
 
-- name: WIN_SHELL | Restart VM
+- name: WIN_SHELL | Stop VM
   delegate_to: "{{ hyper_v_clustered_instance.hyper_v.host }}"
-  win_shell: restart-vm {{ hyper_v_clustered_instance.sdn }} -force
-#  tags:
-#  - setNetwork
+  win_shell: stop-vm {{ hyper_v_clustered_instance.sdn }} -force -turnoff
+
+- name: WIN_SHELL | Set Processor Compatability
+  delegate_to: "{{ hyper_v_clustered_instance.hyper_v.host }}"
+  win_shell: Get-VMProcessor -VMName {{ hyper_v_clustered_instance.sdn }} | Set-VMProcessor -CompatibilityForMigrationEnabled 1
+  when: hyper_v_clustered_instance.cpu_compatability
+
+- name: WIN_SHELL | Start VM
+  delegate_to: "{{ hyper_v_clustered_instance.hyper_v.host }}"
+  win_shell: start-vm {{ hyper_v_clustered_instance.sdn }}
 
 - name: WIN_SHELL | Connect NIC
   delegate_to: "{{ hyper_v_clustered_instance.hyper_v.host }}"

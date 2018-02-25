@@ -11,6 +11,7 @@ hyper_v_clustered_instance:
   fqdn: host01
   sdn: host01.domain.com
   processors: 2
+  cpu_compatability: false
   node: hyperv01.domain.com
   memory:
     type: DynamicMemory
